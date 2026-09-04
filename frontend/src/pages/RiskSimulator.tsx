@@ -2,14 +2,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import {
-  ArrowLeft,
   FlaskConical,
   RotateCcw,
   Play,
   SlidersHorizontal,
   AlertTriangle,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 type Scenario = {
   refundRate: number;
@@ -88,7 +86,7 @@ const getUserIdFromToken = (
   }
 };
 export default function RiskSimulator() {
-  const navigate = useNavigate();
+  
 
   const [merchantId, setMerchantId] =
     useState<number | null>(null);

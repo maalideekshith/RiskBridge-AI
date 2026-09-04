@@ -1,20 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   Activity,
   ChevronDown,
-  LayoutDashboard,
-  LogOut,
-  Menu,
-  Search,
-  Settings,
   ShieldCheck,
-  SlidersHorizontal,
-  Sparkles,
   TrendingDown,
   TrendingUp,
   TriangleAlert,
-  X,
   Zap,
 } from "lucide-react";
 import api from "../services/api";
@@ -27,50 +18,10 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
-const navigation = [
-  {
-    section: "OVERVIEW",
-    items: [
-      {
-        label: "Dashboard",
-        icon: LayoutDashboard,
-        active: true,
-      },
-    ],
-  },
-  {
-    section: "INTELLIGENCE",
-    items: [
-      {
-        label: "Risk Monitor",
-        icon: Activity,
-      },
-      {
-        label: "Risk Simulator",
-        icon: SlidersHorizontal,
-      },
-    ],
-  },
-  {
-    section: "REVIEW",
-    items: [
-      {
-        label: "Review Center",
-        icon: ShieldCheck,
-      },
-    ],
-  },
-];
 
 export default function Dashboard() {
-  const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState<
-  "dashboard" | "risk-monitor" | "risk-simulator"
->(
-  "dashboard",
-);
-
+  
+const [sidebarOpen, setSidebarOpen] = useState(false);
   const [riskScore, setRiskScore] = useState<number | null>(null);
   const [riskCategory, setRiskCategory] = useState<string>("");
   const [riskLoading, setRiskLoading] = useState(true);
@@ -462,10 +413,6 @@ setRiskTrendLoading(false);
 },
   ];
 
-  const handleLogout = () => {
-    localStorage.removeItem("access_token");
-    navigate("/login", { replace: true });
-  };
 
   return (
     <div className="min-h-screen bg-[#060914] text-white">

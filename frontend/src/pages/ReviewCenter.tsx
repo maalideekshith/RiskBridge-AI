@@ -3,7 +3,6 @@ import {
   Activity,
   AlertTriangle,
   CheckCircle2,
-  ChevronRight,
   ClipboardCheck,
   FileSearch,
   Loader2,
@@ -12,7 +11,6 @@ import {
   Clock3,
   RefreshCw,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
 type RiskSignals = {
@@ -33,6 +31,7 @@ type RiskSignals = {
 
 type RiskAssessment = {
   assessment_id: number;
+  id?: number;
   payment_id: number;
   risk_score: number;
   risk_category: string;
@@ -60,8 +59,11 @@ type EvidenceState = {
   policies: unknown[];
   risk_signals: unknown[];
 };
-
-type ChecklistState = Record<string, unknown>;
+type ChecklistState = {
+  checklist?: unknown[];
+  checklist_count?: number;
+  [key: string]: unknown;
+};
 
 const signalLabels: Record<string, string> = {
   amount_anomaly: "Amount anomaly",
@@ -123,8 +125,8 @@ function formatDate(value?: string) {
   });
 }
 
-function extractArray(value: unknown): unknown[] {
-  if (Array.isArray(value)) return value;
+function extractArray<T = Record<string, unknown>>(value: unknown): T[] {
+  if (Array.isArray(value)) return value as T[];
 
   if (
     value &&
@@ -132,7 +134,7 @@ function extractArray(value: unknown): unknown[] {
     "items" in value &&
     Array.isArray((value as { items?: unknown }).items)
   ) {
-    return (value as { items: unknown[] }).items;
+    return (value as { items: unknown[] }).items as T[];
   }
 
   return [];
@@ -165,7 +167,7 @@ function extractText(value: unknown): string {
 }
 
 export default function ReviewCenter() {
-  const navigate = useNavigate();
+  
 
   const [merchantId, setMerchantId] = useState<number | null>(null);
 
@@ -1240,13 +1242,34 @@ setEvidence(collectedEvidence);
             </div>
           ) : (
             <div className="grid gap-4 p-6 sm:grid-cols-2 lg:grid-cols-5">
-              {[
-                ["Transactions", "transactions", Activity],
-                ["Refunds", "refunds", RefreshCw],
-                ["Disputes", "disputes", AlertTriangle],
-                ["Policies", "policies", ClipboardCheck],
-                ["Risk signals", "risk_signals", ShieldAlert],
-              ].map(([label, key, Icon]) => {
+              
+                {[
+  {
+    label: "Transactions",
+    key: "transactions",
+    Icon: Activity,
+  },
+  {
+    label: "Refunds",
+    key: "refunds",
+    Icon: RefreshCw,
+  },
+  {
+    label: "Disputes",
+    key: "disputes",
+    Icon: AlertTriangle,
+  },
+  {
+    label: "Policies",
+    key: "policies",
+    Icon: ClipboardCheck,
+  },
+  {
+    label: "Risk signals",
+    key: "risk_signals",
+    Icon: ShieldAlert,
+  },
+  ].map(({ label, key, Icon }) => {
                 const count =
                   evidenceCounts[
                     key as keyof typeof evidenceCounts
