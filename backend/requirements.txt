@@ -59,3 +59,4 @@ urllib3==2.6.3
 uvicorn==0.52.3
 
 razorpay==2.0.1
+passlib==1.7.4
